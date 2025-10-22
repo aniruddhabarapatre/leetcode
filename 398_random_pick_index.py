@@ -38,3 +38,24 @@ class Solution:
 
     def pick(self, target: int) -> int:
         return random.choice(self.indices[target])
+
+
+# Variant: Using Reservoir Sampling
+class Solution2:
+    # Time Complexity: O(n) for pickK
+    # Space Complexity: O(1)
+    def __init__(self, nums: list[int]):
+        self.nums = nums
+
+    # Step 1: fill initial k
+    def pickK(self, k: int) -> list[int]:
+        reservoir = self.nums[:k]
+        n = len(self.nums)
+
+        # Step 2: reservoir sampling
+        for i in range(k, n):
+            j = random.randint(0, i)
+            if j < k:
+                reservoir[j] = self.nums[i]
+
+        return reservoir
