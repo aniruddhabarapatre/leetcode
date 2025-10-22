@@ -59,3 +59,28 @@ class Solution2:
                 reservoir[j] = self.nums[i]
 
         return reservoir
+
+
+# Variant: Pick index of maximum element using Reservoir Sampling
+class Solution3:
+    # Time Complexity: O(n) for pickMaxIndex
+    # Space Complexity: O(1)
+    def __init__(self, nums: list[int]):
+        self.nums = nums
+
+    def pickMaxIndex(self) -> int:
+        max_val = float("-inf")
+        count = 0
+        chosen_index = -1
+
+        for i, num in enumerate(self.nums):
+            if num > max_val:
+                max_val = num
+                count = 1
+                chosen_index = i
+            elif num == max_val:
+                count += 1
+                if random.randint(1, count) == 1:
+                    chosen_index = i
+
+        return chosen_index
