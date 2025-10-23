@@ -68,6 +68,8 @@ class SolutionVariant:
             # Base case: both pointers reach the end
             if i == len(word) and j == len(abbr):
                 return True
+
+            # If only one pointer reaches the end
             if j == len(abbr):
                 return False
 
