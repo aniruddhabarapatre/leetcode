@@ -68,3 +68,29 @@ class Solution:
                 stack.append(part)
 
         return "/" + "/".join(stack)
+
+
+# Variant: cwd and cd simulation
+class Solution2:
+    # Time complexity: O(n)
+    # Space complexity: O(n)
+    def simplifyPathWithCd(self, cwd: str, cd: str) -> str:
+        # if cd is absolute, ignore cwd
+        if cd.startswith("/"):
+            path = cd
+        else:
+            path = (cwd.rstrip("/") + "/" + cd).strip("/") if cwd else cd
+
+        parts = path.split("/")
+        stack = []
+
+        for part in parts:
+            if part == "" or part == ".":
+                continue
+            elif part == "..":
+                if stack:
+                    stack.pop()
+            else:
+                stack.append(part)
+
+        return "/" + "/".join(stack)
