@@ -3,13 +3,18 @@ Design a data structure that follows the constraints of a Least Recently Used (L
 
 Implement the LRUCache class:
 
-LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
-int get(int key) Return the value of the key if the key exists, otherwise return -1.
-void put(int key, int value) Update the value of the key if the key exists.
-Otherwise, add the key-value pair to the cache.
+- LRUCache(int capacity) -- Initialize the LRU cache with positive size capacity.
+- int get(int key) -- Return the value of the key if the key exists, otherwise return -1.
+- void put(int key, int value) --  Update the value of the key if the key exists.
+    Otherwise, add the key-value pair to the cache.
+
 If the number of keys exceeds the capacity from this operation, evict the least recently used key.
 The functions get and put must each run in O(1) average time complexity.
 
+* Variant
+
+- boolean del(int key) -- Remove the key-value pair if it exists, and return true. Otherwise, return false.
+- int last() -- Returns the value if at least one entry exists, otherwise return -1.
 
 Example 1:
 
@@ -92,3 +97,17 @@ class LRUCache:
             lru = self.left.next
             self._remove(lru)
             del self.cache[lru.key]
+
+    # Variant methods
+    def delete(self, key: int) -> bool:
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+            del self.cache[key]
+            return True
+        return False
+
+    def last(self) -> int:
+        if self.right.prev != self.left:
+            return self.right.prev.value
+        return -1
