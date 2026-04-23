@@ -26,6 +26,7 @@ Explanation: The maximum width exists in the second level with length 2 (3,2).
 """
 
 from typing import Optional
+from collections import deque
 
 
 # Definition for a binary tree node.
@@ -44,24 +45,25 @@ class Solution:
             return 0
 
         max_width = 0
-        queue = [(root, 0)]  # (node, index)
+        queue = deque([(root, 0)])  # (node, index)
 
         while queue:
             level_length = len(queue)
-            _, first_index = queue[0]  # index of the first node at this level
+            _, first_index = queue[0]
+            _, last_index = queue[-1]
+
+            # width of current level
+            max_width = max(max_width, last_index - first_index + 1)
 
             for _ in range(level_length):
-                node, index = queue.pop(0)
+                node, index = queue.popleft()
+
+                # normalize index to prevent overflow
+                index -= first_index
 
                 if node.left:
                     queue.append((node.left, 2 * index))
                 if node.right:
                     queue.append((node.right, 2 * index + 1))
-
-            # Calculate the width of the current level
-            _, last_index = (
-                queue[-1] if queue else (None, first_index)
-            )  # index of the last node at this level
-            max_width = max(max_width, last_index - first_index + 1)
 
         return max_width
