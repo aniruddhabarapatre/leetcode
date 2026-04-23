@@ -29,7 +29,7 @@ class Solution:
     # Time complexity: O(V + E)
     # Space complexity: O(V + E)
 
-    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+    def canFinish_bfs(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         graph = defaultdict(list)
         in_degree = [0] * numCourses
 
@@ -51,3 +51,29 @@ class Solution:
                     queue.append(neighbor)
 
         return visited_count == numCourses
+
+    def canFinish_dfs(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        graph = defaultdict(list)
+
+        for a, b in prerequisites:
+            graph[b].append(a)  # b -> a
+
+        state = [0] * numCourses  # 0=unvisited, 1=visiting, 2=visited
+
+        def dfs(course):
+            if state[course] == 1:  # cycle
+                return False
+            if state[course] == 2:
+                return True
+
+            state[course] = 1
+            for neighbor in graph[course]:
+                if not dfs(neighbor):
+                    return False
+            state[course] = 2
+            return True
+
+        for c in range(numCourses):
+            if not dfs(c):
+                return False
+        return True
